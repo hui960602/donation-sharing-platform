@@ -91,16 +91,17 @@ interface PlaceholderCardProps {
   category: string;
   condition: string;
   location: string;
+  imageUrl: string;
   onClaim: () => void;
 }
 
-export function PlaceholderCard({ name, category, condition, location, onClaim }: PlaceholderCardProps) {
+export function PlaceholderCard({ name, category, condition, location, imageUrl, onClaim }: PlaceholderCardProps) {
   return (
     <article className="group relative bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
       {/* Full-width Image Container */}
       <div className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
         <img
-          src={`https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format`}
+          src={imageUrl}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           loading="lazy"

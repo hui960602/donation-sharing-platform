@@ -11,15 +11,16 @@ interface PlaceholderItem {
   category: string;
   condition: string;
   location: string;
+  imageUrl: string;
 }
 
 const INITIAL_PLACEHOLDER_ITEMS: PlaceholderItem[] = [
-  { id: "ph-1", name: "Vintage Desk Lamp", category: "Furniture", condition: "Good", location: "Downtown" },
-  { id: "ph-2", name: "Children's Books Set", category: "Books", condition: "Like New", location: "East Side" },
-  { id: "ph-3", name: "Kitchen Mixer", category: "Kitchen", condition: "Fair", location: "Suburb Area" },
-  { id: "ph-4", name: "Yoga Mat", category: "Sports", condition: "Good", location: "North District" },
-  { id: "ph-5", name: "Winter Jacket (M)", category: "Clothing", condition: "Like New", location: "Central" },
-  { id: "ph-6", name: "Board Games Bundle", category: "Toys", condition: "Good", location: "West End" },
+  { id: "ph-1", name: "Vintage Desk Lamp", category: "Furniture", condition: "Good", location: "Downtown", imageUrl: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&h=400&fit=crop" },
+  { id: "ph-2", name: "Children's Books Set", category: "Books", condition: "Like New", location: "East Side", imageUrl: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=400&fit=crop" },
+  { id: "ph-3", name: "Kitchen Mixer", category: "Kitchen", condition: "Fair", location: "Suburb Area", imageUrl: "https://images.unsplash.com/photo-1594385208974-2e75f8d7bb48?w=600&h=400&fit=crop" },
+  { id: "ph-4", name: "Yoga Mat", category: "Sports", condition: "Good", location: "North District", imageUrl: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=600&h=400&fit=crop" },
+  { id: "ph-5", name: "Winter Jacket", category: "Clothing", condition: "Like New", location: "Central", imageUrl: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=400&fit=crop" },
+  { id: "ph-6", name: "Board Games Bundle", category: "Toys", condition: "Good", location: "West End", imageUrl: "https://images.unsplash.com/photo-1611371805429-8b5c1b2c34ba?w=600&h=400&fit=crop" },
 ];
 
 export function ItemGrid() {
@@ -121,6 +122,7 @@ export function ItemGrid() {
                 category={item.category}
                 condition={item.condition}
                 location={item.location}
+                imageUrl={item.imageUrl}
                 onClaim={() => handleClaimAttempt("placeholder", item.id, item.name)}
               />
             ))}
