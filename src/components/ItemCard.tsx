@@ -1,15 +1,16 @@
 import { DonatedItem } from "@/types/donation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Tag, Clock, Mail } from "lucide-react";
+import { MapPin, Tag, Clock, Hand } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 interface ItemCardProps {
   item: DonatedItem;
   isNew?: boolean;
+  onClaim: (item: DonatedItem) => void;
 }
 
-export function ItemCard({ item, isNew = false }: ItemCardProps) {
+export function ItemCard({ item, isNew = false, onClaim }: ItemCardProps) {
   const timeAgo = formatDistanceToNow(new Date(item.createdAt), { addSuffix: true });
 
   return (
@@ -63,11 +64,9 @@ export function ItemCard({ item, isNew = false }: ItemCardProps) {
           </div>
         </div>
 
-        <Button className="w-full" size="sm" asChild>
-          <a href={`mailto:${item.contactEmail}?subject=Interest in: ${item.itemName}`}>
-            <Mail className="h-4 w-4 mr-2" />
-            Contact Donor
-          </a>
+        <Button className="w-full" size="sm" onClick={() => onClaim(item)}>
+          <Hand className="h-4 w-4 mr-2" />
+          Claim Now
         </Button>
       </div>
     </article>
@@ -76,13 +75,15 @@ export function ItemCard({ item, isNew = false }: ItemCardProps) {
 
 // Static placeholder card component
 interface PlaceholderCardProps {
+  id: string;
   name: string;
   category: string;
   condition: string;
   location: string;
+  onClaim: () => void;
 }
 
-export function PlaceholderCard({ name, category, condition, location }: PlaceholderCardProps) {
+export function PlaceholderCard({ name, category, condition, location, onClaim }: PlaceholderCardProps) {
   return (
     <article className="group bg-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
@@ -118,9 +119,9 @@ export function PlaceholderCard({ name, category, condition, location }: Placeho
           </div>
         </div>
 
-        <Button className="w-full" size="sm">
-          <Mail className="h-4 w-4 mr-2" />
-          Contact Donor
+        <Button className="w-full" size="sm" onClick={onClaim}>
+          <Hand className="h-4 w-4 mr-2" />
+          Claim Now
         </Button>
       </div>
     </article>

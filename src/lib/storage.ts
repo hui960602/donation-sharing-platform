@@ -27,6 +27,18 @@ export function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
+export function deleteDonatedItem(itemId: string): boolean {
+  try {
+    const items = getDonatedItems();
+    const filteredItems = items.filter((item) => item.id !== itemId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredItems));
+    return true;
+  } catch (error) {
+    console.error("Error deleting from localStorage:", error);
+    return false;
+  }
+}
+
 export function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
