@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDonatedItems, deleteDonatedItem } from "@/lib/storage";
-import { DonatedItem } from "@/types/donation";
+import { getDonatedItemsFromDB, deleteDonatedItemFromDB, subscribeToItemChanges, DatabaseDonatedItem } from "@/lib/database";
 import { ItemCard, PlaceholderCard } from "@/components/ItemCard";
 import { ClaimConfirmDialog, ClaimSuccessDialog } from "@/components/ClaimDialog";
 import { Package } from "lucide-react";
@@ -24,7 +23,7 @@ const INITIAL_PLACEHOLDER_ITEMS: PlaceholderItem[] = [
 ];
 
 export function ItemGrid() {
-  const [donatedItems, setDonatedItems] = useState<DonatedItem[]>([]);
+  const [donatedItems, setDonatedItems] = useState<DatabaseDonatedItem[]>([]);
   const [placeholderItems, setPlaceholderItems] = useState<PlaceholderItem[]>(INITIAL_PLACEHOLDER_ITEMS);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,21 +33,27 @@ export function ItemGrid() {
   const [claimTarget, setClaimTarget] = useState<{ type: "donated" | "placeholder"; id: string; name: string } | null>(null);
 
   useEffect(() => {
-    const items = getDonatedItems();
-    setDonatedItems(items);
-    setIsLoading(false);
-
-    const handleStorageChange = () => {
-      const updatedItems = getDonatedItems();
-      setDonatedItems(updatedItems);
+    // Fetch initial data
+    const fetchItems = async () => {
+      const items = await getDonatedItemsFromDB();
+      setDonatedItems(items);
+      setIsLoading(false);
     };
+    
+    fetchItems();
 
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("donationAdded", handleStorageChange);
+    // Subscribe to realtime updates for cross-device sync
+    const unsubscribe = subscribeToItemChanges(
+      (newItem) => {
+        setDonatedItems((prev) => [newItem, ...prev]);
+      },
+      (deletedId) => {
+        setDonatedItems((prev) => prev.filter((item) => item.id !== deletedId));
+      }
+    );
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("donationAdded", handleStorageChange);
+      unsubscribe();
     };
   }, []);
 
@@ -57,16 +62,17 @@ export function ItemGrid() {
     setConfirmOpen(true);
   };
 
-  const handleConfirmClaim = () => {
+  const handleConfirmClaim = async () => {
     if (!claimTarget) return;
 
     if (claimTarget.type === "donated") {
-      // Remove from localStorage
-      deleteDonatedItem(claimTarget.id);
-      // Remove from state
-      setDonatedItems((prev) => prev.filter((item) => item.id !== claimTarget.id));
+      // Remove from database
+      const success = await deleteDonatedItemFromDB(claimTarget.id);
+      if (success) {
+        // Realtime subscription will handle state update
+      }
     } else {
-      // Remove placeholder from state
+      // Remove placeholder from state (local only)
       setPlaceholderItems((prev) => prev.filter((item) => item.id !== claimTarget.id));
     }
 
@@ -103,13 +109,23 @@ export function ItemGrid() {
           </div>
         ) : (
           <div id="item-listing-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Dynamically added donated items */}
+            {/* Dynamically added donated items from database */}
             {donatedItems.map((item, index) => (
               <ItemCard
                 key={item.id}
-                item={item}
+                item={{
+                  id: item.id,
+                  itemName: item.name,
+                  description: item.description || "",
+                  category: item.category,
+                  condition: item.condition,
+                  location: item.location,
+                  contactEmail: item.contact_email,
+                  imageBase64: item.image_url || "",
+                  createdAt: item.created_at,
+                }}
                 isNew={index === 0}
-                onClaim={(item) => handleClaimAttempt("donated", item.id, item.itemName)}
+                onClaim={(mappedItem) => handleClaimAttempt("donated", mappedItem.id, mappedItem.itemName)}
               />
             ))}
 

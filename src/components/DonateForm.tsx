@@ -12,8 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { CATEGORIES, CONDITIONS, DonatedItem } from "@/types/donation";
-import { fileToBase64, generateId, saveDonatedItem } from "@/lib/storage";
+import { CATEGORIES, CONDITIONS } from "@/types/donation";
+import { fileToBase64 } from "@/lib/storage";
+import { saveDonatedItemToDB } from "@/lib/database";
 import { Upload, ImagePlus, CheckCircle, Loader2 } from "lucide-react";
 
 export function DonateForm() {
@@ -115,24 +116,20 @@ export function DonateForm() {
       // Convert image to Base64
       const imageBase64 = await fileToBase64(selectedFile!);
 
-      // Create donation item object
-      const donationItem: DonatedItem = {
-        id: generateId(),
-        itemName: formData.itemName.trim(),
+      // Save to database
+      const { data, error } = await saveDonatedItemToDB({
+        name: formData.itemName.trim(),
         description: formData.description.trim(),
         category: formData.category,
         condition: formData.condition,
         location: formData.location.trim(),
-        contactEmail: formData.contactEmail.trim(),
-        imageBase64: imageBase64,
-        createdAt: new Date().toISOString(),
-      };
+        contact_email: formData.contactEmail.trim(),
+        image_url: imageBase64,
+      });
 
-      // Save to localStorage
-      saveDonatedItem(donationItem);
-
-      // Dispatch custom event for real-time update
-      window.dispatchEvent(new CustomEvent("donationAdded"));
+      if (error) {
+        throw error;
+      }
 
       toast({
         title: "Donation Successful!",
