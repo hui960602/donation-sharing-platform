@@ -14,58 +14,69 @@ export function ItemCard({ item, isNew = false, onClaim }: ItemCardProps) {
   const timeAgo = formatDistanceToNow(new Date(item.createdAt), { addSuffix: true });
 
   return (
-    <article className={`group bg-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 ${isNew ? 'animate-scale-in ring-2 ring-primary' : ''}`}>
-      {/* Image Container */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+    <article className={`group relative bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 ${isNew ? 'ring-2 ring-primary ring-offset-2 ring-offset-background animate-scale-in' : ''}`}>
+      {/* Full-width Image Container */}
+      <div className="relative w-full aspect-[16/10] overflow-hidden">
         <img
           src={item.imageBase64}
           alt={item.itemName}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           loading="lazy"
         />
-        {isNew && (
-          <div className="absolute top-3 left-3">
-            <Badge className="bg-primary text-primary-foreground font-semibold">
-              New
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Badges */}
+        <div className="absolute top-4 left-4 flex gap-2">
+          {isNew && (
+            <Badge className="bg-primary text-primary-foreground font-bold shadow-lg">
+              ✨ New
             </Badge>
-          </div>
-        )}
-        <div className="absolute top-3 right-3">
-          <Badge variant="secondary" className="bg-card/90 backdrop-blur-sm">
+          )}
+        </div>
+        <div className="absolute top-4 right-4">
+          <Badge variant="secondary" className="bg-background/95 backdrop-blur-md text-foreground font-medium shadow-lg">
             {item.condition}
           </Badge>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-5">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="text-lg font-bold text-card-foreground line-clamp-1">
-            {item.itemName}
-          </h3>
-        </div>
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-card-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+          {item.itemName}
+        </h3>
 
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-5 leading-relaxed">
           {item.description}
         </p>
 
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Tag className="h-4 w-4 text-primary" />
+        <div className="flex flex-wrap gap-4 mb-5 text-sm">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="p-1.5 rounded-full bg-primary/10">
+              <Tag className="h-3.5 w-3.5 text-primary" />
+            </div>
             <span>{item.category}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 text-primary" />
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="p-1.5 rounded-full bg-primary/10">
+              <MapPin className="h-3.5 w-3.5 text-primary" />
+            </div>
             <span>{item.location}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Clock className="h-4 w-4 text-primary" />
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="p-1.5 rounded-full bg-primary/10">
+              <Clock className="h-3.5 w-3.5 text-primary" />
+            </div>
             <span>{timeAgo}</span>
           </div>
         </div>
 
-        <Button className="w-full" size="sm" onClick={() => onClaim(item)}>
-          <Hand className="h-4 w-4 mr-2" />
+        <Button 
+          className="w-full h-12 text-base font-semibold rounded-xl shadow-md hover:shadow-lg transition-all" 
+          onClick={() => onClaim(item)}
+        >
+          <Hand className="h-5 w-5 mr-2" />
           Claim Now
         </Button>
       </div>
@@ -73,7 +84,7 @@ export function ItemCard({ item, isNew = false, onClaim }: ItemCardProps) {
   );
 }
 
-// Static placeholder card component
+// Static placeholder card component with matching modern design
 interface PlaceholderCardProps {
   id: string;
   name: string;
@@ -85,42 +96,56 @@ interface PlaceholderCardProps {
 
 export function PlaceholderCard({ name, category, condition, location, onClaim }: PlaceholderCardProps) {
   return (
-    <article className="group bg-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+    <article className="group relative bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+      {/* Full-width Image Container */}
+      <div className="relative w-full aspect-[16/10] overflow-hidden bg-muted">
         <img
-          src="https://via.placeholder.com/400x200"
+          src={`https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format`}
           alt={name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
         />
-        <div className="absolute top-3 right-3">
-          <Badge variant="secondary" className="bg-card/90 backdrop-blur-sm">
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Condition Badge */}
+        <div className="absolute top-4 right-4">
+          <Badge variant="secondary" className="bg-background/95 backdrop-blur-md text-foreground font-medium shadow-lg">
             {condition}
           </Badge>
         </div>
       </div>
 
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-card-foreground line-clamp-1 mb-2">
+      {/* Content */}
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-card-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">
           {name}
         </h3>
 
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-          Great item looking for a new home. Contact for more details.
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-5 leading-relaxed">
+          Great item looking for a new home. Contact for more details about pickup and availability.
         </p>
 
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Tag className="h-4 w-4 text-primary" />
+        <div className="flex flex-wrap gap-4 mb-5 text-sm">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="p-1.5 rounded-full bg-primary/10">
+              <Tag className="h-3.5 w-3.5 text-primary" />
+            </div>
             <span>{category}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 text-primary" />
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="p-1.5 rounded-full bg-primary/10">
+              <MapPin className="h-3.5 w-3.5 text-primary" />
+            </div>
             <span>{location}</span>
           </div>
         </div>
 
-        <Button className="w-full" size="sm" onClick={onClaim}>
-          <Hand className="h-4 w-4 mr-2" />
+        <Button 
+          className="w-full h-12 text-base font-semibold rounded-xl shadow-md hover:shadow-lg transition-all" 
+          onClick={onClaim}
+        >
+          <Hand className="h-5 w-5 mr-2" />
           Claim Now
         </Button>
       </div>
