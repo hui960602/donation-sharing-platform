@@ -22,9 +22,31 @@ const INITIAL_PLACEHOLDER_ITEMS: PlaceholderItem[] = [
   { id: "ph-6", name: "Board Games Bundle", category: "Toys", condition: "Good", location: "West End", imageUrl: "https://images.unsplash.com/photo-1611371805429-8b5c1b2c34ba?w=600&h=400&fit=crop" },
 ];
 
+const CLAIMED_PLACEHOLDERS_KEY = "heartshare_claimed_placeholders";
+
+function getClaimedPlaceholderIds(): string[] {
+  try {
+    const stored = localStorage.getItem(CLAIMED_PLACEHOLDERS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+function addClaimedPlaceholderId(id: string): void {
+  const claimed = getClaimedPlaceholderIds();
+  if (!claimed.includes(id)) {
+    claimed.push(id);
+    localStorage.setItem(CLAIMED_PLACEHOLDERS_KEY, JSON.stringify(claimed));
+  }
+}
+
 export function ItemGrid() {
   const [donatedItems, setDonatedItems] = useState<DatabaseDonatedItem[]>([]);
-  const [placeholderItems, setPlaceholderItems] = useState<PlaceholderItem[]>(INITIAL_PLACEHOLDER_ITEMS);
+  const [placeholderItems, setPlaceholderItems] = useState<PlaceholderItem[]>(() => {
+    const claimedIds = getClaimedPlaceholderIds();
+    return INITIAL_PLACEHOLDER_ITEMS.filter(item => !claimedIds.includes(item.id));
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   // Claim dialog state
@@ -72,7 +94,8 @@ export function ItemGrid() {
         // Realtime subscription will handle state update
       }
     } else {
-      // Remove placeholder from state (local only)
+      // Remove placeholder from state AND persist to localStorage
+      addClaimedPlaceholderId(claimTarget.id);
       setPlaceholderItems((prev) => prev.filter((item) => item.id !== claimTarget.id));
     }
 
