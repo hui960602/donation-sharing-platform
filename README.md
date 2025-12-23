@@ -1,73 +1,49 @@
-# Welcome to your Lovable project
+# HeartShare - Donations Hub
 
-## Project info
+HeartShare is a modern, real-time web application designed to connect donors with people in need. Our mission is to ensure that **unused items find a second life** and **make a real difference in someone's day**. By turning unwanted items into something wanted, we help every object find its perfect home while actively **reducing waste generation**.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🌐 Live Access
 
-## How can I edit this code?
+You can access the live, fully functional version of HeartShare here:
+👉 **[https://donation-sharing-platform.lovable.app](https://donation-sharing-platform.lovable.app)**
 
-There are several ways of editing your application.
+## 🌟 Key Features
 
-**Use Lovable**
+* **Real-time Synchronization:** Powered by a shared backend, item listings update instantly across all connected devices when an item is donated or claimed.
+* **Modern UI/UX:** A clean, responsive, and contemporary design built for a seamless user experience.
+* **Secure Claiming Process:** Features a two-step confirmation modal to prevent accidental claims.
+* **Privacy-Focused Contact:** The donor's contact information (email) is securely hidden and only revealed to the claimant in the "Claim Successful" window.
+* **Image Support:** Integrated image upload functionality allowing donors to showcase their items.
+* **Fully English Interface:** Professional UI designed entirely in English for broad accessibility.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 🛠️ Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+* **Frontend:** React, Vite, Tailwind CSS, Bootstrap 5 (UI components)
+* **Backend:** Supabase (Database & Real-time Synchronization)
+* **Icons:** Lucide React
 
-**Use your preferred IDE**
+## 🚀 How to Run Locally
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+To run the project on your local machine:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/your-username/heartshare.git](https://github.com/your-username/heartshare.git)
+    cd heartshare
+    ```
 
-Follow these steps:
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3.  **Start the development server**
+    ```bash
+    npm run dev
+    ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4.  **Access the app**
+    Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+*Let unwanted items find the right home.*
